@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Davetiyeni Oluştur</title>
+<meta name="theme-color" content="#1f3a34">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="olustur.css">
+</head>
+<body>
+<main class="panel">
+  <h1>Davetiyeni Oluştur</h1>
+  <p class="sub">Bilgileri doldur, sana özel 3 boyutlu davetiye bağlantısını al.</p>
+
+  <form id="form" novalidate>
+    <div class="row">
+      <label>Gelin
+        <input name="g" required maxlength="40" autocomplete="off">
+      </label>
+      <label>Damat
+        <input name="d" required maxlength="40" autocomplete="off">
+      </label>
+    </div>
+    <div class="row">
+      <label>Tarih
+        <input name="tarih" type="date" required>
+      </label>
+      <label>Saat
+        <input name="saat" type="time" value="19:00" required>
+      </label>
+    </div>
+    <label>Mekân adı
+      <input name="m" required maxlength="80" autocomplete="off">
+    </label>
+    <label>Adres
+      <input name="a" maxlength="160" autocomplete="off">
+    </label>
+    <label>Harita bağlantısı <small>(isteğe bağlı)</small>
+      <input name="h" type="url" placeholder="https://maps.app.goo.gl/…" inputmode="url">
+    </label>
+    <p class="error" id="error" role="alert" hidden></p>
+    <button type="submit">Davetiyeyi oluştur</button>
+  </form>
+
+  <section class="result" id="result" hidden>
+    <h2>Davetiyen hazır</h2>
+    <input id="link" readonly aria-label="Davetiye bağlantısı">
+    <div class="actions">
+      <button type="button" id="copy">Bağlantıyı kopyala</button>
+      <a id="preview" target="_blank" rel="noopener">Önizle</a>
+      <a id="whatsapp" target="_blank" rel="noopener">WhatsApp’ta paylaş</a>
+    </div>
+  </section>
+</main>
+<script src="olustur.js"></script>
+</body>
+</html>

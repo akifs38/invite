@@ -1,5 +1,23 @@
 (function () {
-  const d = DAVETIYE;
+  // Bağlantıdaki parametreler config.js'teki varsayılanların yerine geçer:
+  // g=gelin, d=damat, t=tarih, m=mekân, a=adres, h=harita, f=fotoğraf
+  const p = new URLSearchParams(location.search);
+  const text = (k, max) => (p.get(k) || "").trim().slice(0, max);
+  const httpsUrl = (k) => {
+    try {
+      const u = new URL(p.get(k) || "");
+      return u.protocol === "https:" ? u.href : "";
+    } catch (e) { return ""; }
+  };
+  const d = {
+    gelin: text("g", 40) || DAVETIYE.gelin,
+    damat: text("d", 40) || DAVETIYE.damat,
+    tarih: isNaN(new Date(text("t", 40))) ? DAVETIYE.tarih : text("t", 40),
+    mekan: text("m", 80) || DAVETIYE.mekan,
+    adres: p.has("m") ? text("a", 160) : DAVETIYE.adres,
+    harita: httpsUrl("h") || DAVETIYE.harita,
+    foto: httpsUrl("f") || DAVETIYE.foto,
+  };
   const $ = (id) => document.getElementById(id);
   const stage = $("stage");
   const envelope = $("envelope");
@@ -22,8 +40,8 @@
 
   const when = new Date(d.tarih);
   $("dateText").textContent = when.toLocaleDateString("tr-TR", {
-    day: "numeric", month: "long", year: "numeric", weekday: "long",
-  }) + " · " + when.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+    day: "numeric", month: "long", year: "numeric", weekday: "long", timeZone: "Europe/Istanbul",
+  }) + " · " + when.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Istanbul" });
 
   const photo = $("photo");
   const img = $("photoImg");

@@ -196,6 +196,16 @@ body {
 
 @keyframes pulse { 50% { opacity: .45; } }
 
+.make {
+  position: absolute; left: 50%; bottom: 2.2vh;
+  transform: translateX(-50%);
+  color: #cfc4ab;
+  font-size: .95rem;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+.make:hover, .make:focus-visible { color: #fff; }
+
 @media (prefers-reduced-motion: reduce) {
   .envelope, .env-flap, .card, .door, .tilt { transition-duration: .01s; }
   .hint { animation: none; }
