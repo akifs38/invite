@@ -195,6 +195,8 @@ body {
   overflow: visible;
 }
 .opened .frame { --ry: 0deg; }
+.frame.wide { width: min(84vw, 440px); aspect-ratio: 4 / 3; border-radius: 14px; }
+.mono[hidden] { display: none; }
 .frame.live { transition: transform .2s ease-out; }
 .frame::before {
   content: "";

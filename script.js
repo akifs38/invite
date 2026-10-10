@@ -61,7 +61,11 @@
 
   if (d.foto) {
     const img = $("photoImg");
-    img.onload = () => { img.hidden = false; $("mono").hidden = true; };
+    img.onload = () => {
+      img.hidden = false;
+      $("mono").hidden = true;
+      $("frame").classList.toggle("wide", img.naturalWidth > img.naturalHeight);
+    };
     img.src = d.foto;
   }
 

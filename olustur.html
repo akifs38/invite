@@ -72,6 +72,34 @@
       </div>
     </fieldset>
 
+    <fieldset>
+      <legend>Fotoğraf <small>(isteğe bağlı)</small></legend>
+      <p class="help">Gelinin ve damadın yüzünün net göründüğü birer fotoğraf ile bir film ya da dizi sahnesi yükleyin; yüzler sahneye yerleştirilir.</p>
+      <div class="row">
+        <label>Gelin fotoğrafı
+          <input name="fotoGelin" type="file" accept="image/*">
+        </label>
+        <label>Damat fotoğrafı
+          <input name="fotoDamat" type="file" accept="image/*">
+        </label>
+      </div>
+      <label>Sahne görseli
+        <input name="fotoSahne" type="file" accept="image/*">
+      </label>
+      <label>Saç
+        <select name="sac">
+          <option value="user_hair">Kendi saçımız kalsın</option>
+          <option value="target_hair">Sahnedeki saç kalsın</option>
+        </select>
+      </label>
+      <label>fal.ai anahtarı <small>(yalnızca bu cihazda saklanır, bağlantıya eklenmez)</small>
+        <input name="key" type="password" autocomplete="off" spellcheck="false">
+      </label>
+      <button type="button" class="secondary" id="swap">Yüzleri sahneye yerleştir</button>
+      <p class="status" id="swapStatus" role="status"></p>
+      <img class="swap-result" id="swapResult" alt="Yüz değiştirme sonucu" hidden>
+    </fieldset>
+
     <p class="error" id="error" role="alert" hidden></p>
     <button type="submit">Davetiyeyi oluştur</button>
   </form>
