@@ -92,12 +92,24 @@
   <footer class="foot reveal">
     <p class="foot-mono" id="footMono"></p>
     <p>Sizi aramızda görmek dileğiyle</p>
+    <div class="share" id="share" hidden>
+      <p class="share-title">Davetiyeyi paylaş</p>
+      <div class="buttons">
+        <button class="btn" type="button" id="shareBtn" hidden>Görsel olarak paylaş</button>
+        <button class="btn ghost" type="button" id="pngBtn">PNG indir</button>
+        <button class="btn ghost" type="button" id="jpgBtn">JPEG indir</button>
+        <button class="btn ghost" type="button" id="qrBtn">QR kodu indir</button>
+      </div>
+    </div>
+    <p class="views" id="views" hidden></p>
     <a class="make" href="olustur.html">Kendi davetiyeni oluştur</a>
   </footer>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="config.js"></script>
+<script src="kart.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -83,7 +83,11 @@
           <input name="fotoDamat" type="file" accept="image/*">
         </label>
       </div>
-      <label>Sahne görseli
+      <div class="scenes" id="scenes" hidden>
+        <span class="themes-label">Hazır sahneler</span>
+        <div class="scene-grid" id="sceneGrid"></div>
+      </div>
+      <label><span id="sceneLabel">Sahne görseli</span>
         <input name="fotoSahne" type="file" accept="image/*">
       </label>
       <p class="pick-help" id="pickHelp" hidden></p>
@@ -108,8 +112,30 @@
       <a id="preview" target="_blank" rel="noopener">Önizle</a>
       <a id="whatsapp" target="_blank" rel="noopener">WhatsApp’ta paylaş</a>
     </div>
+
+    <div id="cardBlock" hidden>
+      <h3>Görsel olarak paylaş</h3>
+      <p class="help">WhatsApp durumu ya da sohbette paylaşmak için davetiyenin resmi. Üzerindeki QR kod 3 boyutlu davetiyeyi açar.</p>
+      <img class="card-preview" id="cardPreview" alt="Davetiye görseli">
+      <div class="actions">
+        <button type="button" id="cardShare" hidden>Görseli paylaş</button>
+        <button type="button" class="secondary" id="cardPng">PNG indir</button>
+        <button type="button" class="secondary" id="cardJpg">JPEG indir</button>
+      </div>
+    </div>
+
+    <div id="qrBlock" hidden>
+      <h3>QR kod</h3>
+      <p class="help">Basılı davetiyeye ya da masa kartına koymak için; okutan kişi davetiyeyi açar.</p>
+      <img class="qr-preview" id="qrPreview" alt="Davetiye bağlantısının QR kodu">
+      <div class="actions">
+        <button type="button" class="secondary" id="qrDownload">QR kodu indir</button>
+      </div>
+    </div>
   </section>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="kart.js"></script>
 <script src="olustur.js"></script>
 </body>
 </html>

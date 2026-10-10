@@ -261,6 +261,13 @@ h2::before, h2::after { content: ""; flex: 1 1 0; max-width: 56px; height: 1px; 
   color: var(--accent);
   text-shadow: 0 0 30px color-mix(in srgb, var(--accent) 50%, transparent);
 }
+button.btn { border: 0; font: inherit; font-weight: 600; cursor: pointer; }
+button.btn.ghost { background: transparent; }
+button.btn:disabled { opacity: .55; cursor: progress; }
+.share { margin-top: 34px; font-style: normal; }
+.share[hidden], .views[hidden], .btn[hidden] { display: none; }
+.share-title { font-size: .9rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: var(--head); }
+.views { margin-top: 26px; font-size: 1rem; }
 .make { display: inline-block; margin-top: 28px; color: var(--muted); font-size: 1rem; font-style: normal; text-underline-offset: 3px; }
 
 @media (prefers-reduced-motion: reduce) {

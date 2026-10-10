@@ -53,9 +53,41 @@
     document.getElementById("whatsapp").href = "https://wa.me/?text=" +
       encodeURIComponent(v("g") + " & " + v("d") + " düğün davetiyesi: " + url);
     copy.textContent = "Bağlantıyı kopyala";
+    showShare({
+      gelin: v("g"), damat: v("d"), tarih: params.get("t"), mekan: v("m"), adres: v("a"),
+      foto: photoLocal || photoUrl, tema: form.s.value,
+    }, url);
     result.hidden = false;
     result.scrollIntoView({ behavior: "smooth", block: "start" });
   });
+
+  // ---------- Paylaşım görseli ve QR ----------
+  const Kart = window.DavetiyeKart;
+  let cardCanvas = null, qrCanvas = null, shareName = "davetiye", shareText = "";
+  async function showShare(data, url) {
+    const cardBlock = document.getElementById("cardBlock"), qrBlock = document.getElementById("qrBlock");
+    cardBlock.hidden = qrBlock.hidden = true;
+    if (!Kart) return;
+    shareName = Kart.fileName(data);
+    shareText = data.gelin + " & " + data.damat + " düğün davetiyesi: " + url;
+    qrCanvas = Kart.qrImage(url);
+    if (qrCanvas) {
+      document.getElementById("qrPreview").src = qrCanvas.toDataURL("image/png");
+      qrBlock.hidden = false;
+    }
+    try {
+      cardCanvas = await Kart.draw(data, url);
+      document.getElementById("cardPreview").src = cardCanvas.toDataURL("image/jpeg", .85);
+      document.getElementById("cardShare").hidden = !Kart.canShare();
+      cardBlock.hidden = false;
+    } catch (e) { cardCanvas = null; }
+  }
+  document.getElementById("cardPng").addEventListener("click", () => cardCanvas && Kart.download(cardCanvas, "image/png", shareName));
+  document.getElementById("cardJpg").addEventListener("click", () => cardCanvas && Kart.download(cardCanvas, "image/jpeg", shareName));
+  document.getElementById("cardShare").addEventListener("click", async () => {
+    if (cardCanvas && !(await Kart.share(cardCanvas, shareName, shareText))) Kart.download(cardCanvas, "image/jpeg", shareName);
+  });
+  document.getElementById("qrDownload").addEventListener("click", () => qrCanvas && Kart.download(qrCanvas, "image/png", shareName + "-qr"));
 
   // ---------- Yüz değiştirme (fal.ai) ----------
   // Tek yüz değiştiren model kullanılır: sahnede işaretlenen her yüz ayrı kırpılır,
@@ -69,6 +101,7 @@
   const pickHelp = document.getElementById("pickHelp");
   const pctx = pick.getContext("2d");
   let photoUrl = "";
+  let photoLocal = ""; // aynı görselin bu cihazdaki kopyası
   let sceneBmp = null;
   let taps = []; // [gelin, damat], sahne pikseli cinsinden
 
@@ -101,23 +134,83 @@
       : "Yüzler işaretlendi (G: gelin, D: damat). Değiştirmek için tekrar dokunun.";
   }
 
-  form.fotoSahne.addEventListener("change", async () => {
+  // Seçilen sahneyi (hazır ya da yüklenen) işaretleme tuvaline koyar
+  async function useScene(blob) {
     taps = [];
     sceneBmp = null;
     pick.hidden = pickHelp.hidden = true;
-    const file = form.fotoSahne.files[0];
-    if (!file) return;
+    if (!blob) return;
     try {
-      sceneBmp = await createImageBitmap(file);
+      sceneBmp = await createImageBitmap(blob);
     } catch (e) {
       return say("Sahne görseli açılamadı. JPG ya da PNG deneyin.", true);
     }
+    say("");
     const k = Math.min(1, 1536 / Math.max(sceneBmp.width, sceneBmp.height));
     pick.width = Math.round(sceneBmp.width * k);
     pick.height = Math.round(sceneBmp.height * k);
     pick.hidden = pickHelp.hidden = false;
     drawPick();
+  }
+
+  const sceneGrid = document.getElementById("sceneGrid");
+  const markScene = (btn) => sceneGrid.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", b === btn));
+
+  form.fotoSahne.addEventListener("change", () => {
+    markScene(null);
+    useScene(form.fotoSahne.files[0]);
   });
+
+  // Hazır sahneler: repodaki sahneler/ klasörüne atılan her görsel burada listelenir
+  (async function () {
+    const host = location.hostname, pages = host.endsWith(".github.io");
+    const owner = pages ? host.split(".")[0] : "akifs38";
+    const repo = pages ? location.pathname.split("/")[1] : "invite";
+    let files;
+    try {
+      files = JSON.parse(sessionStorage.getItem("sahneler"));
+    } catch (e) {}
+    if (!Array.isArray(files)) {
+      try {
+        const res = await fetch("https://api.github.com/repos/" + owner + "/" + repo + "/contents/sahneler");
+        if (!res.ok) return;
+        files = (await res.json())
+          .filter((f) => f.type === "file" && /\.(jpe?g|png|webp)$/i.test(f.name))
+          .map((f) => f.name);
+        try { sessionStorage.setItem("sahneler", JSON.stringify(files)); } catch (e) {}
+      } catch (e) { return; }
+    }
+    if (!files.length) return;
+    files.forEach((name) => {
+      const title = name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ");
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "scene";
+      btn.setAttribute("aria-pressed", "false");
+      const img = document.createElement("img");
+      img.src = "sahneler/" + encodeURIComponent(name);
+      img.alt = "";
+      img.loading = "lazy";
+      const cap = document.createElement("span");
+      cap.textContent = title;
+      btn.append(img, cap);
+      btn.addEventListener("click", async () => {
+        try {
+          const res = await fetch(img.src);
+          if (!res.ok) throw new Error();
+          form.fotoSahne.value = "";
+          markScene(btn);
+          await useScene(await res.blob());
+          pick.scrollIntoView({ behavior: "smooth", block: "center" });
+        } catch (e) {
+          say("Sahne yüklenemedi. Tekrar deneyin.", true);
+        }
+      });
+      sceneGrid.appendChild(btn);
+    });
+    document.getElementById("scenes").hidden = false;
+    document.getElementById("sceneLabel").textContent = "ya da kendi sahneni yükle";
+  })();
 
   pick.addEventListener("click", (e) => {
     const box = pick.getBoundingClientRect();
@@ -225,7 +318,8 @@
       const put = await fetch(up.upload_url, { method: "PUT", headers: { "Content-Type": "image/jpeg" }, body: blob });
       if (!put.ok) throw new Error("Fotoğraf kaydedilemedi. Tekrar deneyin.");
       photoUrl = up.file_url;
-      swapResult.src = URL.createObjectURL(blob);
+      photoLocal = URL.createObjectURL(blob);
+      swapResult.src = photoLocal;
       swapResult.hidden = false;
       say("Hazır. “Davetiyeyi oluştur”a bastığınızda fotoğraf davetiyeye eklenir.");
     } catch (err) {

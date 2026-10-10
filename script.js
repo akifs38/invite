@@ -167,6 +167,49 @@
     });
   }
 
+  // ---------- Paylaşım: görsel ve QR ----------
+  const Kart = window.DavetiyeKart;
+  if (Kart) {
+    const name = Kart.fileName(d);
+    let cardJob = null;
+    const cardImage = () => cardJob || (cardJob = Kart.draw(d, location.href));
+    const run = (btn, job) => btn.addEventListener("click", async () => {
+      btn.disabled = true;
+      try { await job(); } finally { btn.disabled = false; }
+    });
+    $("share").hidden = false;
+    run($("pngBtn"), async () => Kart.download(await cardImage(), "image/png", name));
+    run($("jpgBtn"), async () => Kart.download(await cardImage(), "image/jpeg", name));
+    $("shareBtn").hidden = !Kart.canShare();
+    run($("shareBtn"), async () => {
+      const ok = await Kart.share(await cardImage(), name, couple + " düğün davetiyesi: " + location.href);
+      if (!ok) Kart.download(await cardImage(), "image/jpeg", name);
+    });
+    const qr = Kart.qrImage(location.href);
+    $("qrBtn").hidden = !qr;
+    if (qr) run($("qrBtn"), () => Kart.download(qr, "image/png", name + "-qr"));
+  }
+
+  // ---------- Görüntülenme sayısı (cihaz başına bir kez sayılır) ----------
+  (async function () {
+    try {
+      const raw = [d.gelin, d.damat, d.tarih, d.mekan].join("|");
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(raw));
+      const key = Array.from(new Uint8Array(buf)).slice(0, 10).map((b) => b.toString(16).padStart(2, "0")).join("");
+      const space = location.hostname.endsWith("github.io") ? "akifs38-invite" : "invite-yerel";
+      let seen = false;
+      try { seen = localStorage.getItem("goruldu:" + key) === "1"; } catch (e) {}
+      const res = await fetch("https://abacus.jasoncameron.dev/" + (seen ? "get" : "hit") + "/" + space + "/" + key);
+      if (!res.ok) return;
+      const n = (await res.json()).value;
+      try { localStorage.setItem("goruldu:" + key, "1"); } catch (e) {}
+      if (n > 0) {
+        $("views").textContent = "Bu davetiyeyi " + n.toLocaleString("tr-TR") + " kişi görüntüledi";
+        $("views").hidden = false;
+      }
+    } catch (e) {}
+  })();
+
   // ---------- Açılış ----------
   let state = "enter"; // enter -> idle -> open -> bg
   let openAt = 0;
