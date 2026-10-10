@@ -86,12 +86,8 @@
       <label>Sahne görseli
         <input name="fotoSahne" type="file" accept="image/*">
       </label>
-      <label>Saç
-        <select name="sac">
-          <option value="user_hair">Kendi saçımız kalsın</option>
-          <option value="target_hair">Sahnedeki saç kalsın</option>
-        </select>
-      </label>
+      <p class="pick-help" id="pickHelp" hidden></p>
+      <canvas class="pick" id="scenePick" hidden></canvas>
       <label>fal.ai anahtarı <small>(yalnızca bu cihazda saklanır, bağlantıya eklenmez)</small>
         <input name="key" type="password" autocomplete="off" spellcheck="false">
       </label>
