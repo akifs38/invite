@@ -1,0 +1,202 @@
+:root {
+  --w: min(86vw, 380px, 56vh);
+  --green: #1f3a34;
+  --green-dark: #152823;
+  --ivory: #f7f1e5;
+  --paper: #efe6d3;
+  --gold: #b8935a;
+  --ink: #2c2a26;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { height: 100%; }
+
+body {
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 30%, #2c5148, var(--green-dark) 75%);
+  color: var(--ink);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stage { position: fixed; inset: 0; }
+
+/* ---------- Zarf ---------- */
+.envelope {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: var(--w);
+  height: calc(var(--w) * .66);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  outline: none;
+  transition: transform .9s ease, opacity .9s ease;
+}
+.envelope:focus-visible { box-shadow: 0 0 0 3px var(--gold); border-radius: 6px; }
+
+.env-back, .env-front, .env-flap { position: absolute; inset: 0; border-radius: 6px; }
+
+.env-back { background: #d9ccb1; box-shadow: 0 30px 60px rgba(0, 0, 0, .45); z-index: 1; }
+
+.env-front {
+  z-index: 3;
+  background: linear-gradient(180deg, #eadfc8, var(--paper));
+  clip-path: polygon(0 0, 50% 56%, 100% 0, 100% 100%, 0 100%);
+}
+
+.env-flap {
+  z-index: 4;
+  height: 58%;
+  background: linear-gradient(180deg, #e3d6bb, #d6c7a6);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: top center;
+  transform: perspective(900px) rotateX(0deg);
+  transition: transform .7s ease, z-index 0s .35s;
+}
+
+.seal {
+  position: absolute;
+  left: 50%; bottom: 6%;
+  width: calc(var(--w) * .17); aspect-ratio: 1;
+  transform: translateX(-50%);
+  display: grid; place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #d2ad72, var(--gold) 60%, #8d6c3c);
+  color: #fff8ea;
+  font-family: "Great Vibes", cursive;
+  font-size: calc(var(--w) * .075);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .35);
+  transition: opacity .3s ease;
+}
+
+.stage.open .env-flap { transform: perspective(900px) rotateX(180deg); z-index: 1; }
+.stage.open .seal { opacity: 0; }
+.stage.show .envelope { transform: translate(-50%, 40%); opacity: 0; pointer-events: none; }
+
+/* ---------- Kart ---------- */
+.card {
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 2;
+  width: var(--w);
+  aspect-ratio: 1 / 1.5;
+  transform: translate(-50%, -50%) scale(.42);
+  perspective: 1400px;
+  visibility: hidden;
+  transition: transform .9s cubic-bezier(.2, .7, .2, 1);
+}
+.stage.open .card { visibility: visible; }
+.stage.rise .card { transform: translate(-50%, calc(-50% - var(--w) * .55)) scale(.42); }
+.stage.show .card { transform: translate(-50%, -50%) scale(1); }
+
+.tilt {
+  position: absolute; inset: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .2s ease-out;
+}
+
+.inside {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center;
+  gap: calc(var(--w) * .022);
+  padding: calc(var(--w) * .06);
+  overflow-y: auto;
+  text-align: center;
+  background: var(--ivory);
+  border-radius: 8px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, .5);
+  outline: 1px solid var(--gold);
+  outline-offset: calc(var(--w) * -.03);
+}
+
+.photo {
+  position: relative;
+  flex: 0 0 auto;
+  width: 78%;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 4px;
+  background: linear-gradient(135deg, #dfd3bb, #cdbd9c);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, .2);
+}
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-empty {
+  position: absolute; inset: 0;
+  display: none; place-items: center;
+  color: #7c6c4d; font-size: calc(var(--w) * .042); font-style: italic;
+}
+.photo.empty img { display: none; }
+.photo.empty .photo-empty { display: grid; }
+
+.lead { font-size: calc(var(--w) * .043); font-style: italic; color: #6b6253; }
+
+.names {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: calc(var(--w) * .115);
+  line-height: 1.05;
+  color: var(--green);
+}
+.names em { font-style: normal; color: var(--gold); margin: 0 .25em; }
+
+.date { font-size: calc(var(--w) * .048); font-weight: 600; letter-spacing: .04em; }
+
+.countdown { list-style: none; display: flex; gap: calc(var(--w) * .03); }
+.countdown li {
+  min-width: calc(var(--w) * .15);
+  padding: calc(var(--w) * .014) 0;
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+}
+.countdown b { display: block; font-size: calc(var(--w) * .055); color: var(--green); font-variant-numeric: tabular-nums; }
+.countdown span { font-size: calc(var(--w) * .03); text-transform: uppercase; letter-spacing: .08em; color: #6b6253; }
+
+.venue { font-size: calc(var(--w) * .042); line-height: 1.25; }
+.venue strong { display: block; font-weight: 600; }
+
+.map {
+  margin-top: auto;
+  padding: calc(var(--w) * .02) calc(var(--w) * .06);
+  border-radius: 999px;
+  background: var(--green);
+  color: var(--ivory);
+  font-size: calc(var(--w) * .042);
+  text-decoration: none;
+}
+.map:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ---------- Kapaklar ---------- */
+.door {
+  position: absolute; top: 0; bottom: 0;
+  width: 50%;
+  display: grid; place-items: center;
+  background: linear-gradient(160deg, #2b5046, var(--green));
+  color: var(--gold);
+  font-family: "Great Vibes", cursive;
+  font-size: calc(var(--w) * .2);
+  box-shadow: inset 0 0 0 calc(var(--w) * .02) var(--green), inset 0 0 0 calc(var(--w) * .024) var(--gold);
+  transition: transform 1.5s cubic-bezier(.3, .6, .2, 1);
+}
+.door-left { left: 0; border-radius: 8px 0 0 8px; transform-origin: left center; }
+.door-right { right: 0; border-radius: 0 8px 8px 0; transform-origin: right center; }
+.stage.unfold .door-left { transform: rotateY(-112deg); }
+.stage.unfold .door-right { transform: rotateY(112deg); }
+
+.hint {
+  position: absolute; left: 0; right: 0; bottom: 9vh;
+  text-align: center;
+  color: #e9dfc9;
+  font-size: 1.15rem; font-style: italic; letter-spacing: .05em;
+  animation: pulse 2s ease-in-out infinite;
+  transition: opacity .4s ease;
+}
+.stage.open .hint { opacity: 0; animation: none; }
+
+@keyframes pulse { 50% { opacity: .45; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .envelope, .env-flap, .card, .door, .tilt { transition-duration: .01s; }
+  .hint { animation: none; }
+}

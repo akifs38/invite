@@ -1,0 +1,3 @@
+# Yerel anahtarlar ve ham fotoğraflar repoya girmesin
+.env
+ham/

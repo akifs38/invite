@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Düğün Davetiyesi</title>
+<meta name="theme-color" content="#1f3a34">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="stage" id="stage">
+  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Davetiyeyi aç">
+    <div class="env-back"></div>
+    <div class="env-front"></div>
+    <div class="env-flap"><span class="seal" id="seal"></span></div>
+  </div>
+
+  <article class="card" id="card" aria-hidden="true">
+    <div class="tilt" id="tilt">
+      <section class="inside">
+        <figure class="photo" id="photo">
+          <img id="photoImg" alt="Gelin ve damat">
+          <figcaption class="photo-empty">Fotoğraf buraya gelecek</figcaption>
+        </figure>
+        <p class="lead">Birlikte bir ömre “evet” diyoruz</p>
+        <h1 class="names"><span id="bride"></span><em>&amp;</em><span id="groom"></span></h1>
+        <p class="date" id="dateText"></p>
+        <ul class="countdown" id="countdown" aria-label="Düğüne kalan süre">
+          <li><b id="cdD">0</b><span>gün</span></li>
+          <li><b id="cdH">0</b><span>saat</span></li>
+          <li><b id="cdM">0</b><span>dakika</span></li>
+          <li><b id="cdS">0</b><span>saniye</span></li>
+        </ul>
+        <p class="venue"><strong id="venueName"></strong><span id="venueAddr"></span></p>
+        <a class="map" id="mapLink" target="_blank" rel="noopener">Yol tarifi al</a>
+      </section>
+      <div class="door door-left"><span id="initialBride"></span></div>
+      <div class="door door-right"><span id="initialGroom"></span></div>
+    </div>
+  </article>
+
+  <p class="hint" id="hint">Açmak için dokunun</p>
+</main>
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
