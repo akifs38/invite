@@ -1,50 +1,106 @@
 <!doctype html>
-<html lang="tr">
+<html lang="tr" class="locked">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Düğün Davetiyesi</title>
-<meta name="theme-color" content="#1f3a34">
+<meta name="description" content="Düğünümüze davetlisiniz.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Great+Vibes&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main class="stage" id="stage">
+<canvas class="dust" id="dust" aria-hidden="true"></canvas>
+
+<!-- Açılış: 3B zarf -->
+<div class="intro" id="intro">
   <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Davetiyeyi aç">
     <div class="env-back"></div>
+    <div class="env-letter"><span id="letterMono"></span></div>
     <div class="env-front"></div>
     <div class="env-flap"><span class="seal" id="seal"></span></div>
   </div>
+  <p class="hint">Açmak için dokunun</p>
+</div>
 
-  <article class="card" id="card" aria-hidden="true">
-    <div class="tilt" id="tilt">
-      <section class="inside">
-        <figure class="photo" id="photo">
-          <img id="photoImg" alt="Gelin ve damat">
-          <figcaption class="photo-empty">Fotoğraf buraya gelecek</figcaption>
-        </figure>
-        <p class="lead">Birlikte bir ömre “evet” diyoruz</p>
-        <h1 class="names"><span id="bride"></span><em>&amp;</em><span id="groom"></span></h1>
-        <p class="date" id="dateText"></p>
-        <ul class="countdown" id="countdown" aria-label="Düğüne kalan süre">
-          <li><b id="cdD">0</b><span>gün</span></li>
-          <li><b id="cdH">0</b><span>saat</span></li>
-          <li><b id="cdM">0</b><span>dakika</span></li>
-          <li><b id="cdS">0</b><span>saniye</span></li>
-        </ul>
-        <p class="venue"><strong id="venueName"></strong><span id="venueAddr"></span></p>
-        <a class="map" id="mapLink" target="_blank" rel="noopener">Yol tarifi al</a>
-      </section>
-      <div class="door door-left"><span id="initialBride"></span></div>
-      <div class="door door-right"><span id="initialGroom"></span></div>
+<main class="invite" id="invite" aria-hidden="true">
+  <header class="hero">
+    <p class="eyebrow rise" style="--i:0">Düğünümüze davetlisiniz</p>
+    <div class="frame-wrap rise" style="--i:1">
+      <div class="frame" id="frame">
+        <img id="photoImg" alt="Gelin ve damat" hidden>
+        <div class="mono" id="mono" aria-hidden="true"><span id="monoBride"></span><i>&amp;</i><span id="monoGroom"></span></div>
+      </div>
     </div>
-  </article>
+    <h1 class="names rise" style="--i:2"><span id="bride"></span><em>&amp;</em><span id="groom"></span></h1>
+    <p class="date rise" style="--i:3" id="dateText"></p>
+    <a class="cue rise" style="--i:4" href="#takvim" aria-label="Aşağı kaydır">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+    </a>
+  </header>
 
-  <p class="hint" id="hint">Açmak için dokunun</p>
-  <a class="make" href="olustur.html">Kendi davetiyeni oluştur</a>
+  <section class="sec reveal" id="takvim">
+    <h2>Tarihi Kaydedin</h2>
+    <div class="calendar">
+      <p class="cal-title" id="calTitle"></p>
+      <div class="cal-grid" id="calGrid" aria-hidden="true"></div>
+      <p class="cal-time" id="calTime"></p>
+    </div>
+  </section>
+
+  <section class="sec reveal">
+    <h2>Geri Sayım</h2>
+    <ul class="countdown" id="countdown" aria-label="Düğüne kalan süre">
+      <li><b id="cdD">0</b><span>gün</span></li>
+      <li><b id="cdH">0</b><span>saat</span></li>
+      <li><b id="cdM">0</b><span>dakika</span></li>
+      <li><b id="cdS">0</b><span>saniye</span></li>
+    </ul>
+    <p class="done" id="cdDone" hidden>Düğünümüz gerçekleşti. İyi ki vardınız.</p>
+  </section>
+
+  <section class="sec reveal" id="families" hidden>
+    <h2>Ailelerimiz</h2>
+    <div class="families">
+      <p><span>Gelinin ailesi</span><strong id="brideFamily"></strong></p>
+      <p><span>Damadın ailesi</span><strong id="groomFamily"></strong></p>
+    </div>
+  </section>
+
+  <section class="sec reveal">
+    <blockquote class="note" id="note"></blockquote>
+  </section>
+
+  <section class="sec reveal">
+    <h2>Mekân</h2>
+    <div class="venue">
+      <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.800-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
+      <strong id="venueName"></strong>
+      <span id="venueAddr"></span>
+      <div class="buttons">
+        <a class="btn" id="mapLink" target="_blank" rel="noopener">Yol tarifi al</a>
+        <a class="btn ghost" id="calLink" target="_blank" rel="noopener">Takvime ekle</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec reveal" id="rsvp" hidden>
+    <h2>Katılım Bildirimi</h2>
+    <p class="muted">Katılım durumunuzu bize WhatsApp’tan iletebilirsiniz.</p>
+    <div class="buttons">
+      <a class="btn" id="rsvpYes" target="_blank" rel="noopener">Katılıyorum</a>
+      <a class="btn ghost" id="rsvpNo" target="_blank" rel="noopener">Katılamıyorum</a>
+    </div>
+  </section>
+
+  <footer class="foot reveal">
+    <p class="foot-mono" id="footMono"></p>
+    <p>Sizi aramızda görmek dileğiyle</p>
+    <a class="make" href="olustur.html">Kendi davetiyeni oluştur</a>
+  </footer>
 </main>
+
 <script src="config.js"></script>
 <script src="script.js"></script>
 </body>

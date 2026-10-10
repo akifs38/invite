@@ -1,9 +1,10 @@
 :root {
   --green: #1f3a34;
-  --green-dark: #152823;
+  --green-dark: #12221e;
   --ivory: #f7f1e5;
   --gold: #b8935a;
   --ink: #2c2a26;
+  --muted: #6f6656;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,24 +20,32 @@ body {
 }
 
 .panel {
-  width: 100%; max-width: 480px;
+  width: 100%; max-width: 520px;
   padding: 28px 22px;
   background: var(--ivory);
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 30px 70px rgba(0, 0, 0, .45);
 }
 
 h1 { font-family: "Great Vibes", cursive; font-weight: 400; font-size: 2.6rem; color: var(--green); text-align: center; }
 h2 { font-size: 1.4rem; color: var(--green); margin-bottom: 10px; }
-.sub { text-align: center; color: #6b6253; margin: 4px 0 22px; }
+.sub { text-align: center; color: var(--muted); margin: 4px 0 22px; }
 
-form { display: grid; gap: 14px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+form { display: grid; gap: 22px; }
+fieldset { display: grid; gap: 14px; border: 0; min-width: 0; }
+legend {
+  width: 100%;
+  margin-bottom: 12px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--gold);
+  font-size: .9rem; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--green);
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; }
 
 label { display: grid; gap: 4px; font-weight: 600; min-width: 0; }
-label small { font-weight: 400; color: #6b6253; }
+label small { font-weight: 400; color: var(--muted); }
 
-input {
+input:not([type="radio"]), textarea {
   width: 100%; min-width: 0;
   padding: 10px 12px;
   border: 1px solid #cdbd9c;
@@ -45,10 +54,29 @@ input {
   color: var(--ink);
   font: inherit; font-weight: 400;
 }
-input:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+textarea { resize: vertical; }
+input:focus-visible, textarea:focus-visible { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+.themes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.themes-label { flex: 1 0 100%; font-weight: 600; }
+.theme {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px 8px 8px;
+  border: 1px solid #cdbd9c; border-radius: 999px;
+  background: #fffdf8;
+  font-weight: 400; cursor: pointer;
+}
+.theme input { position: absolute; opacity: 0; }
+.theme i {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--a) 50%, var(--b) 50%);
+  box-shadow: inset 0 0 0 2px var(--c);
+}
+.theme:has(input:checked) { border-color: var(--green); box-shadow: 0 0 0 2px var(--green); font-weight: 600; }
+.theme:has(input:focus-visible) { outline: 2px solid var(--gold); outline-offset: 2px; }
 
 button, .actions a {
-  padding: 11px 16px;
+  padding: 12px 16px;
   border: 0; border-radius: 999px;
   background: var(--green);
   color: var(--ivory);
@@ -63,3 +91,5 @@ button:focus-visible, .actions a:focus-visible { outline: 2px solid var(--gold);
 .result { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--gold); }
 .actions { display: grid; gap: 10px; margin-top: 12px; }
 .actions a { background: transparent; color: var(--green); box-shadow: inset 0 0 0 1px var(--green); }
+
+@media (max-width: 380px) { .row { grid-template-columns: 1fr; } }

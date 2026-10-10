@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Davetiyeni Oluştur</title>
-<meta name="theme-color" content="#1f3a34">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
@@ -16,31 +15,63 @@
   <p class="sub">Bilgileri doldur, sana özel 3 boyutlu davetiye bağlantısını al.</p>
 
   <form id="form" novalidate>
-    <div class="row">
-      <label>Gelin
-        <input name="g" required maxlength="40" autocomplete="off">
+    <fieldset>
+      <legend>Çift</legend>
+      <div class="row">
+        <label>Gelin
+          <input name="g" required maxlength="40" autocomplete="off">
+        </label>
+        <label>Damat
+          <input name="d" required maxlength="40" autocomplete="off">
+        </label>
+      </div>
+      <div class="row">
+        <label>Gelinin ailesi <small>(isteğe bağlı)</small>
+          <input name="ga" maxlength="60" autocomplete="off" placeholder="Ayşe & Ahmet Yılmaz">
+        </label>
+        <label>Damadın ailesi <small>(isteğe bağlı)</small>
+          <input name="da" maxlength="60" autocomplete="off" placeholder="Fatma & Ali Demir">
+        </label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Tarih ve mekân</legend>
+      <div class="row">
+        <label>Tarih
+          <input name="tarih" type="date" required>
+        </label>
+        <label>Saat
+          <input name="saat" type="time" value="19:00" required>
+        </label>
+      </div>
+      <label>Mekân adı
+        <input name="m" required maxlength="80" autocomplete="off">
       </label>
-      <label>Damat
-        <input name="d" required maxlength="40" autocomplete="off">
+      <label>Adres <small>(isteğe bağlı)</small>
+        <input name="a" maxlength="160" autocomplete="off">
       </label>
-    </div>
-    <div class="row">
-      <label>Tarih
-        <input name="tarih" type="date" required>
+      <label>Harita bağlantısı <small>(isteğe bağlı)</small>
+        <input name="h" type="url" placeholder="https://maps.app.goo.gl/…" inputmode="url">
       </label>
-      <label>Saat
-        <input name="saat" type="time" value="19:00" required>
+    </fieldset>
+
+    <fieldset>
+      <legend>Kişiselleştir</legend>
+      <label>Davetlilere notunuz <small>(isteğe bağlı)</small>
+        <textarea name="n" maxlength="280" rows="3" placeholder="Hayatımızın en özel gününde sizleri de aramızda görmekten mutluluk duyarız."></textarea>
       </label>
-    </div>
-    <label>Mekân adı
-      <input name="m" required maxlength="80" autocomplete="off">
-    </label>
-    <label>Adres
-      <input name="a" maxlength="160" autocomplete="off">
-    </label>
-    <label>Harita bağlantısı <small>(isteğe bağlı)</small>
-      <input name="h" type="url" placeholder="https://maps.app.goo.gl/…" inputmode="url">
-    </label>
+      <label>WhatsApp numarası <small>(isteğe bağlı; davetliler katılım durumunu bu numaraya yazar ve numara bağlantıda görünür)</small>
+        <input name="w" type="tel" inputmode="tel" maxlength="20" placeholder="05xx xxx xx xx" autocomplete="off">
+      </label>
+      <div class="themes" role="radiogroup" aria-label="Tema">
+        <span class="themes-label">Tema</span>
+        <label class="theme"><input type="radio" name="s" value="zumrut" checked><i style="--a:#1f3a34;--b:#f6f0e4;--c:#b8935a"></i>Zümrüt</label>
+        <label class="theme"><input type="radio" name="s" value="gul"><i style="--a:#6e2a3a;--b:#fbf2ee;--c:#c0896b"></i>Gül</label>
+        <label class="theme"><input type="radio" name="s" value="gece"><i style="--a:#0f1626;--b:#18223a;--c:#c9a66b"></i>Gece</label>
+      </div>
+    </fieldset>
+
     <p class="error" id="error" role="alert" hidden></p>
     <button type="submit">Davetiyeyi oluştur</button>
   </form>
