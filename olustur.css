@@ -55,6 +55,8 @@ input:not([type="radio"]), textarea {
   font: inherit; font-weight: 400;
 }
 textarea { resize: vertical; }
+/* Parola alanı değil: tarayıcı kayıtlı parolaları buraya doldurmasın */
+.secret { -webkit-text-security: disc; }
 select {
   width: 100%; padding: 10px 12px;
   border: 1px solid #cdbd9c; border-radius: 6px;
