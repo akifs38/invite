@@ -11,16 +11,11 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<canvas class="dust" id="dust" aria-hidden="true"></canvas>
+<!-- 3B uzay sahnesi: yıldızlar, zarf ve kart burada çizilir -->
+<canvas class="space" id="space" aria-hidden="true"></canvas>
 
-<!-- Açılış: 3B zarf -->
-<div class="intro" id="intro">
-  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Davetiyeyi aç">
-    <div class="env-back"></div>
-    <div class="env-letter"><span id="letterMono"></span></div>
-    <div class="env-front"></div>
-    <div class="env-flap"><span class="seal" id="seal"></span></div>
-  </div>
+<div class="intro" id="intro" role="button" tabindex="0" aria-label="Davetiyeyi aç">
+  <span class="flat-seal" id="seal" aria-hidden="true"></span>
   <p class="hint">Açmak için dokunun</p>
 </div>
 
@@ -42,7 +37,7 @@
 
   <section class="sec reveal" id="takvim">
     <h2>Tarihi Kaydedin</h2>
-    <div class="calendar">
+    <div class="calendar tilt">
       <p class="cal-title" id="calTitle"></p>
       <div class="cal-grid" id="calGrid" aria-hidden="true"></div>
       <p class="cal-time" id="calTime"></p>
@@ -74,7 +69,7 @@
 
   <section class="sec reveal">
     <h2>Mekân</h2>
-    <div class="venue">
+    <div class="venue tilt">
       <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.800-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>
       <strong id="venueName"></strong>
       <span id="venueAddr"></span>
@@ -101,6 +96,7 @@
   </footer>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="config.js"></script>
 <script src="script.js"></script>
 </body>
